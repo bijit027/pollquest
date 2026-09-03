@@ -398,12 +398,13 @@
 
       <!-- ====== SETTINGS TAB ====== -->
       <template v-if="activeTab === 'settings'">
-        <div style="grid-column: 1 / -1;">
+        <div style="grid-column: 1 / -1; max-width: 720px; padding: 32px;">
           <div class="pollquest-builder-tab-content">
-            <div class="pollquest-field">
-              <label style="font-size:13px; font-weight:500; color:var(--foreground); margin-bottom:8px !important; display:block;">Brand color</label>
-              <p style="font-size:12px; color:var(--muted-foreground); margin-bottom:10px !important;">Used for accents on published surveys.</p>
-              <div class="pollquest-color-row">
+            <!-- Brand Color -->
+            <div>
+              <div class="pollquest-field-label">Brand color</div>
+              <p class="pollquest-field-hint">Used for accents on published surveys.</p>
+              <div class="pollquest-field-control pollquest-color-row">
                 <label class="pollquest-color-swatch">
                   <div class="pollquest-color-preview" :style="{ background: survey.settings?.color || '#6366f1' }"></div>
                   <input type="color" v-model="survey.settings.color" />
@@ -412,29 +413,52 @@
               </div>
             </div>
 
-            <div class="pollquest-field" style="margin-top:24px;">
-              <label style="font-size:13px; font-weight:500; color:var(--foreground); margin-bottom:8px !important; display:block;">Widget position</label>
-              <p style="font-size:12px; color:var(--muted-foreground); margin-bottom:10px !important;">Where the survey widget appears on the page.</p>
-              <div class="pollquest-position-toggle">
+            <!-- Widget Position -->
+            <div>
+              <div class="pollquest-field-label">Widget position</div>
+              <p class="pollquest-field-hint">Where the survey widget appears on the page.</p>
+              <div class="pollquest-field-control pollquest-position-toggle">
                 <button
                   v-for="pos in ['bottom-left', 'bottom-center', 'bottom-right']"
                   :key="pos"
                   class="pollquest-pos-btn"
                   :class="{ active: survey.settings?.position === pos }"
                   @click="survey.settings.position = pos"
-                >{{ pos }}</button>
+                >
+                  {{ pos === 'bottom-left' ? 'Bottom left' : pos === 'bottom-center' ? 'Bottom center' : 'Bottom right' }}
+                </button>
               </div>
             </div>
 
-            <div class="pollquest-field" style="margin-top:24px;">
-              <label style="font-size:13px; font-weight:500; color:var(--foreground); margin-bottom:8px !important; display:block;">Confirmation message</label>
-              <input v-model="survey.settings.confirmation.message" placeholder="Thank you for your feedback!" style="max-width:480px;" />
+            <!-- Confirmation Message -->
+            <div>
+              <div class="pollquest-field-label">Confirmation message</div>
+              <p class="pollquest-field-hint">Message to show respondents after completing the survey.</p>
+              <div class="pollquest-field-control">
+                <el-input 
+                  v-model="survey.settings.confirmation.message" 
+                  placeholder="Thank you for your feedback!"
+                  style="max-width: 480px;"
+                  size="large"
+                />
+              </div>
             </div>
 
-            <div class="pollquest-field" style="margin-top:24px;">
-              <label style="font-size:13px; font-weight:500; color:var(--foreground); margin-bottom:8px !important; display:block;">Schedule Publish (Optional)</label>
-              <p style="font-size:12px; color:var(--muted-foreground); margin-bottom:10px !important;">Set a future date and time for the survey to go live.</p>
-              <input type="datetime-local" v-model="survey.publish_at" style="max-width:480px;" />
+            <!-- Schedule Publish -->
+            <div>
+              <div class="pollquest-field-label">Schedule Publish (Optional)</div>
+              <p class="pollquest-field-hint">Set a future date and time for the survey to go live.</p>
+              <div class="pollquest-field-control">
+                <el-date-picker
+                  v-model="survey.publish_at"
+                  type="datetime"
+                  placeholder="Select date and time"
+                  size="large"
+                  format="YYYY-MM-DD HH:mm:ss"
+                  value-format="YYYY-MM-DD HH:mm:ss"
+                  style="max-width: 480px; width: 100%;"
+                />
+              </div>
             </div>
           </div>
         </div>
