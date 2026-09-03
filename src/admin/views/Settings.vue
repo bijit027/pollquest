@@ -119,6 +119,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { ElNotification } from 'element-plus';
 
 const settings = ref({
   default_color: '#6366f1',
@@ -141,12 +142,31 @@ const saveSettings = async () => {
     });
     
     if (res.ok) {
-      alert('Settings saved successfully!');
+      ElNotification({
+        title: 'Settings Saved',
+        message: 'Your settings have been saved successfully.',
+        type: 'success',
+        duration: 3000,
+        customClass: 'pollquest-notification',
+      });
     } else {
-      alert('Failed to save settings.');
+      ElNotification({
+        title: 'Save Failed',
+        message: 'Failed to save settings. Please try again.',
+        type: 'error',
+        duration: 5000,
+        customClass: 'pollquest-notification',
+      });
     }
   } catch (e) {
     console.error('Error saving settings', e);
+    ElNotification({
+      title: 'Error',
+      message: 'An error occurred while saving settings.',
+      type: 'error',
+      duration: 5000,
+      customClass: 'pollquest-notification',
+    });
   }
 };
 

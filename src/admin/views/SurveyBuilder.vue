@@ -31,12 +31,12 @@
           <button class="pollquest-btn pollquest-btn-ghost pollquest-btn-sm" @click="previewSurvey" v-if="route.params.id">
             Preview
           </button>
-          <button class="pollquest-btn pollquest-btn-secondary pollquest-btn-sm" @click="saveDraft">
-            Save draft
+          <button class="pollquest-btn pollquest-btn-secondary pollquest-btn-sm" @click="saveDraft" :disabled="saving">
+            {{ saving && survey.status === 'draft' ? 'Saving...' : 'Save draft' }}
           </button>
-          <button class="pollquest-btn pollquest-btn-primary pollquest-btn-sm" @click="publishSurvey">
+          <button class="pollquest-btn pollquest-btn-primary pollquest-btn-sm" @click="publishSurvey" :disabled="saving">
             <Check />
-            Publish
+            {{ saving && survey.status === 'publish' ? 'Publishing...' : 'Publish' }}
           </button>
         </div>
       </div>
@@ -552,6 +552,7 @@
 <script setup>
 import { ref, reactive, computed, onMounted, inject, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { ElNotification, ElMessageBox } from 'element-plus';
 import {
   ArrowLeft, Check, X, Circle, GripVertical,
   Star, TrendingUp, Type, ListChecks, ToggleLeft,
@@ -562,6 +563,7 @@ const router = useRouter();
 const route = useRoute();
 const openTemplatePicker = inject('openTemplatePicker', () => {});
 const currentTemplateTitle = ref('');
+const saving = ref(false);
 const activeTab = ref('design');
 const previewDevice = ref('desktop');
 const activeQuestionId = ref(null);
@@ -761,15 +763,30 @@ const previewSurvey = () => {
 
 const saveDraft = async () => {
   survey.status = 'draft';
-  await saveSurvey();
+  await saveSurvey(false);
 };
 
 const publishSurvey = async () => {
-  survey.status = 'publish';
-  await saveSurvey();
+  try {
+    await ElMessageBox.confirm(
+      'Are you sure you want to publish this survey? It will become active and visible to visitors on your site.',
+      'Publish Survey',
+      {
+        confirmButtonText: 'Yes, Publish',
+        cancelButtonText: 'Cancel',
+        type: 'info',
+        customClass: 'pollquest-msgbox',
+      }
+    );
+    survey.status = 'publish';
+    await saveSurvey(true);
+  } catch (e) {
+    // User cancelled confirmation
+  }
 };
 
-const saveSurvey = async () => {
+const saveSurvey = async (isPublish = false) => {
+  saving.value = true;
   const config = window.PollQuestAdminConfig || {};
   const isEdit = !!route.params.id;
   const url = isEdit
@@ -782,21 +799,57 @@ const saveSurvey = async () => {
       method,
       headers: {
         'Content-Type': 'application/json',
-        'X-WP-Nonce': config.nonce
+        'X-WP-Nonce': config.nonce,
       },
-      body: JSON.stringify(survey)
+      body: JSON.stringify(survey),
     });
     if (res.ok) {
       const data = await res.json();
-      if (!isEdit) {
-        router.push(`/surveys/${data.id}/edit`);
+      if (!isEdit && data.id) {
+        router.replace(`/surveys/${data.id}/edit`);
       }
-      alert(`Survey ${survey.status === 'publish' ? 'published' : 'saved'} successfully!`);
+
+      if (isPublish || survey.status === 'publish') {
+        ElNotification({
+          title: 'Survey Published!',
+          message: `"${survey.title}" is now active and live on your site.`,
+          type: 'success',
+          position: 'bottom-right',
+          duration: 4000,
+          customClass: 'pollquest-notification',
+        });
+      } else {
+        ElNotification({
+          title: 'Draft Saved',
+          message: `"${survey.title}" draft has been saved.`,
+          type: 'success',
+          position: 'bottom-right',
+          duration: 3000,
+          customClass: 'pollquest-notification',
+        });
+      }
     } else {
-      alert('Failed to save survey. Check console.');
+      ElNotification({
+        title: 'Save Failed',
+        message: 'Failed to save survey. Please check your settings and try again.',
+        type: 'error',
+        position: 'bottom-right',
+        duration: 5000,
+        customClass: 'pollquest-notification',
+      });
     }
   } catch (e) {
     console.error('Error saving survey', e);
+    ElNotification({
+      title: 'Network Error',
+      message: 'A network error occurred while saving the survey.',
+      type: 'error',
+      position: 'bottom-right',
+      duration: 5000,
+      customClass: 'pollquest-notification',
+    });
+  } finally {
+    saving.value = false;
   }
 };
 
