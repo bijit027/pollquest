@@ -4,15 +4,14 @@
     <header class="pollquest-app-header">
       <div class="pollquest-app-header-left">
         <!-- Logo -->
-        <div class="pollquest-logo">
+        <router-link to="/" class="pollquest-logo" style="text-decoration: none;">
           <div class="pollquest-logo-icon">
             <MessageSquare />
           </div>
           <div style="display:flex; align-items: baseline; gap: 8px;">
             <span class="pollquest-logo-text">PollQuest</span>
-            <span class="pollquest-logo-badge">Pro</span>
           </div>
-        </div>
+        </router-link>
 
         <!-- Nav Tabs -->
         <nav class="pollquest-nav-tabs">
