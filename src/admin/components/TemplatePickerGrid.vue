@@ -16,24 +16,16 @@
         </button>
       </div>
 
-      <div class="pollquest-template-search-wrap">
-        <Search class="pollquest-template-search-icon" />
-        <input
-          v-model="searchQuery"
-          type="text"
-          class="pollquest-template-search-input"
-          placeholder="Search templates..."
-        />
-        <button
-          v-if="searchQuery"
-          type="button"
-          class="pollquest-template-search-clear"
-          @click="searchQuery = ''"
-          aria-label="Clear search"
-        >
-          <X />
-        </button>
-      </div>
+      <el-input
+        v-model="searchQuery"
+        placeholder="Search templates..."
+        class="pollquest-search-input pollquest-search-wrap"
+        clearable
+      >
+        <template #prefix>
+          <Search class="pollquest-search-icon" />
+        </template>
+      </el-input>
     </div>
 
     <div v-if="loading" class="pollquest-template-loading">Loading templates…</div>
@@ -222,3 +214,34 @@ async function fetchTemplates() {
 
 onMounted(fetchTemplates);
 </script>
+
+<style scoped>
+.pollquest-template-picker,
+.pollquest-template-picker * {
+  box-sizing: border-box;
+}
+
+.pollquest-template-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.pollquest-template-tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 260px;
+}
+
+@media (max-width: 640px) {
+  .pollquest-search-wrap {
+    max-width: 100%;
+  }
+}
+</style>

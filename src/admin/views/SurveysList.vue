@@ -60,15 +60,16 @@
           </template>
 
           <!-- Search -->
-          <div class="pollquest-search-wrap">
-            <Search class="pollquest-search-icon" />
-            <input
-              type="text"
-              v-model="searchQuery"
-              placeholder="Search surveys"
-              class="pollquest-search-input"
-            />
-          </div>
+          <el-input
+            v-model="searchQuery"
+            placeholder="Search surveys"
+            class="pollquest-search-input"
+            clearable
+          >
+            <template #prefix>
+              <Search class="pollquest-search-icon" />
+            </template>
+          </el-input>
         </div>
       </div>
 
