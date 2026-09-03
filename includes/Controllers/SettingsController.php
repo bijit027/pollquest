@@ -70,6 +70,10 @@ class SettingsController {
 		
 		// Sanitize settings deeply
 		$sanitized = \PollQuest\Utils\Sanitizer::sanitize_array( $params );
+
+		if ( ! empty( $params['onboarding_complete'] ) ) {
+			update_option( 'pollquest_onboarding_complete', true );
+		}
 		
 		update_option( 'pollquest_settings', $sanitized );
 

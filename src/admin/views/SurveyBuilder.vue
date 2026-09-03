@@ -17,6 +17,13 @@
             <Circle />
             {{ survey.status === 'publish' ? 'Published' : 'Draft' }}
           </span>
+          <div v-if="!route.params.id && currentTemplateTitle" class="pollquest-editor-template-badge">
+            <LayoutTemplate class="pollquest-badge-icon" />
+            <span>{{ currentTemplateTitle }}</span>
+            <button type="button" class="pollquest-template-change-btn" @click="openTemplatePicker">
+              Change
+            </button>
+          </div>
         </div>
 
         <!-- Right: actions -->
@@ -543,16 +550,18 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted, inject, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import {
   ArrowLeft, Check, X, Circle, GripVertical,
   Star, TrendingUp, Type, ListChecks, ToggleLeft,
-  Monitor, Smartphone, Hash, Plus, Trash2,
+  Monitor, Smartphone, Hash, Plus, Trash2, LayoutTemplate,
 } from 'lucide-vue-next';
 
 const router = useRouter();
 const route = useRoute();
+const openTemplatePicker = inject('openTemplatePicker', () => {});
+const currentTemplateTitle = ref('');
 const activeTab = ref('design');
 const previewDevice = ref('desktop');
 const activeQuestionId = ref(null);
@@ -891,6 +900,7 @@ const normalizeOptions = (options, type) => {
 };
 
 const applyTemplate = (template) => {
+  currentTemplateTitle.value = template.title || '';
   survey.title = template.title || 'My New Survey';
   survey.questions = (template.questions || []).map((q, i) => ({
     id: q.id || `q${Date.now()}_${i}`,
@@ -916,4 +926,26 @@ const applyTemplate = (template) => {
     activeQuestionId.value = null;
   }
 };
+
+watch(
+  () => route.query.template,
+  async (newTemplateId) => {
+    if (!newTemplateId || route.params.id) return;
+    const config = window.PollQuestAdminConfig || {};
+    try {
+      const templatesRes = await fetch(`${config.api_url}/survey-templates`, {
+        headers: { 'X-WP-Nonce': config.nonce },
+      });
+      if (templatesRes.ok) {
+        const templates = await templatesRes.json();
+        const template = templates.find((t) => t.id === newTemplateId);
+        if (template?.is_available) {
+          applyTemplate(template);
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load survey template', e);
+    }
+  }
+);
 </script>

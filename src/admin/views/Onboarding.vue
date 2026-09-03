@@ -115,7 +115,10 @@ const finishOnboarding = async () => {
         'Content-Type': 'application/json',
         'X-WP-Nonce': config.nonce,
       },
-      body: JSON.stringify({ default_color: brandColor.value }),
+      body: JSON.stringify({
+        default_color: brandColor.value,
+        onboarding_complete: true,
+      }),
     });
   } catch (e) {
     console.warn('Could not save onboarding settings', e);
