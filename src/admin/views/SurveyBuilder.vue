@@ -150,7 +150,7 @@
             <!-- Preview viewport -->
             <div class="pollquest-preview-viewport">
               <div class="pollquest-widget-preview">
-                <div class="pollquest-widget-header" :style="{ backgroundColor: survey.settings?.color || '#6366f1' }">
+                <div class="pollquest-widget-header" :style="{ backgroundColor: survey.settings?.header_color || survey.settings?.color || '#6366f1' }">
                   <span class="pollquest-widget-header-title">{{ survey.title || 'Survey' }}</span>
                   <X />
                 </div>
@@ -238,7 +238,7 @@
                     <input type="number" placeholder="0" style="width:100%; padding:10px; border:1px solid #d1d5db; border-radius:6px; font-size:14px;">
                   </div>
 
-                  <button class="pollquest-widget-next-btn">Next</button>
+                  <button class="pollquest-widget-next-btn" :style="{ backgroundColor: survey.settings?.button_color || survey.settings?.color || '#6366f1' }">Next</button>
                 </div>
               </div>
             </div>
@@ -400,16 +400,48 @@
       <template v-if="activeTab === 'settings'">
         <div style="grid-column: 1 / -1; max-width: 720px; padding: 32px;">
           <div class="pollquest-builder-tab-content">
-            <!-- Brand Color -->
+            <!-- Appearance -->
+            <div>
+              <div class="pollquest-field-label" style="font-size:15px; font-weight:600;">Appearance</div>
+              <p class="pollquest-field-hint">Customize the look of your survey widget.</p>
+            </div>
+
+            <!-- Brand / Accent Color -->
             <div>
               <div class="pollquest-field-label">Brand color</div>
-              <p class="pollquest-field-hint">Used for accents on published surveys.</p>
+              <p class="pollquest-field-hint">Fallback color used for focus rings and accents.</p>
               <div class="pollquest-field-control pollquest-color-row">
                 <label class="pollquest-color-swatch">
                   <div class="pollquest-color-preview" :style="{ background: survey.settings?.color || '#6366f1' }"></div>
                   <input type="color" v-model="survey.settings.color" />
                 </label>
                 <code class="pollquest-color-code">{{ (survey.settings?.color || '#6366f1').toUpperCase() }}</code>
+              </div>
+            </div>
+
+            <!-- Header Color -->
+            <div>
+              <div class="pollquest-field-label">Header color</div>
+              <p class="pollquest-field-hint">Background color of the survey widget header bar.</p>
+              <div class="pollquest-field-control pollquest-color-row">
+                <label class="pollquest-color-swatch">
+                  <div class="pollquest-color-preview" :style="{ background: survey.settings?.header_color || survey.settings?.color || '#6366f1' }"></div>
+                  <input type="color" v-model="survey.settings.header_color" />
+                </label>
+                <code class="pollquest-color-code">{{ (survey.settings?.header_color || survey.settings?.color || '#6366f1').toUpperCase() }}</code>
+              </div>
+            </div>
+
+            <!-- Button Color -->
+            <div>
+              <div class="pollquest-field-label">Button color</div>
+              <p class="pollquest-field-hint">Background color of the Next / Submit buttons.</p>
+              <div class="pollquest-field-control pollquest-color-row">
+                <label class="pollquest-color-swatch">
+                  <div class="pollquest-color-preview" :style="{ background: survey.settings?.button_color || survey.settings?.color || '#6366f1' }"></div>
+                  <input type="color" v-model="survey.settings.button_color" />
+                </label>
+                <code class="pollquest-color-code">{{ (survey.settings?.button_color || survey.settings?.color || '#6366f1').toUpperCase() }}</code>
               </div>
             </div>
 
@@ -631,6 +663,8 @@ const survey = reactive({
   ],
   settings: {
     color: '#6366f1',
+    header_color: '#6366f1',
+    button_color: '#6366f1',
     position: 'bottom-right',
     confirmation: { type: 'message', message: 'Thank you for your feedback!' }
   },
@@ -903,7 +937,9 @@ onMounted(async () => {
         Object.assign(survey, data);
 
         // Ensure nested objects exist
-        if (!survey.settings) survey.settings = { color: '#6366f1', position: 'bottom-right', confirmation: { type: 'message', message: 'Thank you for your feedback!' } };
+        if (!survey.settings) survey.settings = { color: '#6366f1', header_color: '#6366f1', button_color: '#6366f1', position: 'bottom-right', confirmation: { type: 'message', message: 'Thank you for your feedback!' } };
+        if (!survey.settings.header_color) survey.settings.header_color = survey.settings.color || '#6366f1';
+        if (!survey.settings.button_color) survey.settings.button_color = survey.settings.color || '#6366f1';
         if (!survey.targeting) survey.targeting = { rule_match: 'all', rules: [] };
         if (!survey.notifications) {
           survey.notifications = { email: { active: false, addresses: '', logic: { enable: false, conditions: [] } } };

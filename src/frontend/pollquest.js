@@ -216,6 +216,8 @@ class SurveyController {
 
   getStyles() {
     const color = this.survey.settings.color || '#4F46E5';
+    const headerColor = this.survey.settings.header_color || color;
+    const buttonColor = this.survey.settings.button_color || color;
     return `
       .pollquest-widget {
         position: fixed;
@@ -238,7 +240,7 @@ class SurveyController {
       .pollquest-widget.bottom-center { bottom: 0; left: 50%; margin-left: -170px; }
       
       .pollquest-header {
-        background: ${color};
+        background: ${headerColor};
         color: #fff;
         padding: 15px 20px;
         border-radius: 12px 12px 0 0;
@@ -451,7 +453,7 @@ class SurveyController {
       
       .pollquest-btn {
         width: 100%;
-        background: ${color};
+        background: ${buttonColor};
         color: #fff;
         border: none;
         padding: 10px 15px;
