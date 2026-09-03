@@ -207,6 +207,11 @@ class HeatmapService {
 			return null;
 		}
 
+		// Only track if heatmap is published
+		if ( $heatmap->status !== 'publish' ) {
+			return null;
+		}
+
 		return [
 			'heatmap_id' => (int) $heatmap->id,
 			'page_id'    => (int) $heatmap->page_id,

@@ -56,6 +56,8 @@ import {
 
 const loading = ref(true);
 const addons = ref([]);
+const isPro = ref(false);
+const upgradeUrl = ref('');
 
 const iconMap = {
   mail: Mail,

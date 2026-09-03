@@ -72,13 +72,6 @@ class HeatmapController {
 					'methods'             => \WP_REST_Server::CREATABLE,
 					'callback'            => [ $this, 'record_clicks' ],
 					'permission_callback' => [ $this, 'can_record' ],
-					'args'                => [
-						'heatmap_id' => [
-							'type'              => 'integer',
-							'required'          => true,
-							'sanitize_callback' => 'absint',
-						],
-					],
 				],
 			]
 		);
@@ -132,13 +125,13 @@ class HeatmapController {
 	 * @return bool
 	 */
 	public function can_record( WP_REST_Request $request ): bool {
-		$params = $request->get_json_params() ?: $request->get_body_params();
-		$heatmap_id = absint( $params['heatmap_id'] ?? 0 );
+		$heatmap_id = $request->get_param( 'heatmap_id' );
 
 		if ( ! $heatmap_id ) {
 			return false;
 		}
 
+		$heatmap_id = absint( $heatmap_id );
 		$heatmap = $this->heatmap_repository->find( $heatmap_id );
 		return $heatmap && $heatmap->status === 'publish';
 	}
