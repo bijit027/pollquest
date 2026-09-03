@@ -35,14 +35,6 @@
       </div>
 
       <div class="pollquest-app-header-right">
-        <a href="https://pollquest.io/docs" target="_blank" class="pollquest-btn pollquest-btn-secondary pollquest-btn-sm">
-          <BookOpen />
-          Docs
-        </a>
-        <button type="button" class="pollquest-btn pollquest-btn-primary pollquest-btn-sm" @click="showTemplatePicker = true">
-          <Plus />
-          New survey
-        </button>
       </div>
     </header>
 
@@ -65,8 +57,6 @@ import {
   Settings as SettingsIcon,
   Puzzle,
   MousePointerClick,
-  BookOpen,
-  Plus,
 } from 'lucide-vue-next';
 import TemplatePickerModal from './components/TemplatePickerModal.vue';
 

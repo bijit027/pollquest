@@ -131,14 +131,8 @@
               <button class="pollquest-results-btn" @click="$router.push(`/surveys/${survey.id}/results`)">
                 Results
               </button>
-              <button class="pollquest-icon-btn" title="Duplicate" @click="duplicateSurvey(survey.id)">
-                <Copy />
-              </button>
               <button class="pollquest-icon-btn danger" title="Trash" @click="trashSurvey(survey.id)">
                 <Trash2 />
-              </button>
-              <button class="pollquest-icon-btn" title="More">
-                <MoreHorizontal />
               </button>
             </template>
             <template v-else>
@@ -159,7 +153,7 @@
 
 <script setup>
 import { ref, computed, onMounted, inject } from 'vue';
-import { Search, Pencil, Copy, Trash2, MoreHorizontal, Plus } from 'lucide-vue-next';
+import { Search, Pencil, Trash2, Plus } from 'lucide-vue-next';
 
 const openTemplatePicker = inject('openTemplatePicker', () => {});
 
