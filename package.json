@@ -1,6 +1,6 @@
 {
   "name": "pollquest",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "PollQuest Frontend and Admin Build System",
   "scripts": {
     "dev": "vite",

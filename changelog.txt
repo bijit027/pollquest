@@ -1,5 +1,16 @@
 == Changelog ==
 
+= 1.1.0 - 2026-09-04 =
+* Improved: Complete admin UI polish pass across all form inputs, selects, and buttons
+* Improved: All input fields and dropdowns share a consistent design (8px border-radius, 40px height, white bg, subtle shadow)
+* Improved: Schedule Publish date/time picker styled to match the input design system
+* Improved: Removed blue focus ring from all inputs, selects, and buttons
+* Improved: Date picker dropdown border removed; shadow-only elevation
+* Improved: Minimum Role select on Settings page matches the input system
+* Improved: Search input background fixed for theme consistency
+* Fixed: Inline styles replaced with proper CSS classes for Survey Builder tab layout
+* Fixed: Select chevron icon now correctly sized (16×16) and positioned
+
 = 1.0.0 - 2026-07-22 =
 * Initial release
 * Core Features:
