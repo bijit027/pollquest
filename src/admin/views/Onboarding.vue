@@ -215,6 +215,7 @@ const finishOnboarding = async () => {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 15px;
+  margin-top: 10px;
 }
 
 .goal-card {
