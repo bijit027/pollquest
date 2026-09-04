@@ -1,4 +1,4 @@
-import{c as _,c6 as w,bV as T,a as S,r as $,b as u,d as r,e as s,f as i,u as p,n as b,j as g,c7 as x,l as c,c0 as V,c1 as L}from"../admin/admin.js";import{S as N}from"./star-17cb9fd4.js";/**
+import{c as _,c6 as w,bV as T,a as S,r as $,b as u,d as r,e as s,f as i,u as p,n as b,j as g,c7 as x,l as c,c1 as V,c2 as L}from"../admin/admin.js";import{S as N}from"./star-17cb9fd4.js";/**
  * @license lucide-vue-next v1.0.0 - ISC
  *
  * This source code is licensed under the ISC license.

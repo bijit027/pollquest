@@ -4,6 +4,7 @@
   "description": "PollQuest Frontend and Admin Build System",
   "scripts": {
     "dev": "vite",
+    "watch": "vite build --watch",
     "build": "vite build",
     "build:dist": "node scripts/build-dist.js"
   },

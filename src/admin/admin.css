@@ -44,7 +44,7 @@
 #pollquest-admin-app {
   font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: var(--foreground);
-  background: var(--background);
+  background: #ffffff;
   margin: -10px -20px 0 0;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
@@ -370,17 +370,20 @@ button {
 .pollquest-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 8px;
   padding: 8px 16px;
-  border-radius: 6px;
+  height: 36px;
+  border-radius: 8px;
   font-size: 14px;
   font-weight: 500;
-  font-family: 'Manrope', sans-serif;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   cursor: pointer;
   text-decoration: none !important;
   transition: all 0.15s ease;
   line-height: 1;
   border: 1px solid transparent;
+  white-space: nowrap;
 }
 
 .pollquest-btn svg {
@@ -392,8 +395,8 @@ button {
 .pollquest-btn-primary {
   background: var(--primary);
   color: var(--primary-foreground) !important;
-  border-color: var(--primary);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  border-color: transparent;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
 
 .pollquest-btn-primary:hover {
@@ -402,9 +405,10 @@ button {
 }
 
 .pollquest-btn-secondary {
-  background: var(--surface);
+  background: #ffffff;
   color: var(--foreground) !important;
   border-color: var(--border);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .pollquest-btn-secondary:hover {
@@ -414,13 +418,13 @@ button {
 
 .pollquest-btn-ghost {
   background: transparent;
-  color: var(--muted-foreground) !important;
+  color: var(--foreground) !important;
   border-color: transparent;
 }
 
 .pollquest-btn-ghost:hover {
-  background: var(--muted);
-  color: var(--foreground) !important;
+  background: var(--accent);
+  color: var(--accent-foreground) !important;
 }
 
 .pollquest-btn-danger {
@@ -434,8 +438,10 @@ button {
 }
 
 .pollquest-btn-sm {
-  padding: 6px 12px;
+  height: 32px;
+  padding: 0 12px;
   font-size: 13px;
+  border-radius: 6px;
 }
 
 /* Icon-only button */
@@ -763,6 +769,7 @@ button {
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - 64px);
+  background: #ffffff;
 }
 
 /* Sub-header */
@@ -771,7 +778,7 @@ button {
   top: 64px;
   z-index: 10;
   border-bottom: 1px solid var(--border);
-  background: oklch(1 0 0 / 0.92);
+  background: #ffffff;
   backdrop-filter: blur(8px);
 }
 
@@ -781,8 +788,7 @@ button {
   align-items: center;
   gap: 16px;
   padding: 12px 32px;
-  max-width: 1280px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .pollquest-editor-title-row {
@@ -952,9 +958,8 @@ button {
   grid-template-columns: 1fr;
   gap: 24px;
   padding: 32px;
-  max-width: 1280px;
-  margin: 0 auto;
   width: 100%;
+  background: var(--background);
 }
 
 @media (min-width: 1024px) {
@@ -2716,6 +2721,484 @@ button {
   margin-top: 4px !important;
 }
 
+/* Chic UI Refresh Tabs Layout */
+.pollquest-tab-content {
+  grid-column: 1 / -1;
+  padding: 16px 20px 32px 20px;
+  width: 100%;
+}
+
+.pollquest-match-type-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--foreground);
+  display: block;
+  margin-bottom: 12px;
+}
+
+.pollquest-page-heading {
+  margin-bottom: 28px;
+}
+
+.pollquest-page-heading h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.pollquest-page-heading p {
+  font-size: 14px;
+  color: var(--muted-foreground);
+  margin: 6px 0 0 0;
+}
+
+.pollquest-panel {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 36px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.pollquest-setting-field {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 40px;
+  padding: 16px 0;
+  border-top: 1px solid var(--border);
+}
+
+.pollquest-setting-field:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+.pollquest-setting-field:last-child {
+  padding-bottom: 0;
+}
+
+.pollquest-setting-field-header label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--foreground);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.pollquest-setting-field-header p {
+  font-size: 14px;
+  color: var(--muted-foreground);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Color picker chic-ui-refresh style */
+.pollquest-color-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pollquest-color-swatch {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.pollquest-color-swatch:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.pollquest-color-swatch input[type="color"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.pollquest-color-input {
+  height: 42px !important;
+  width: 140px !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px !important;
+  background: #ffffff !important;
+  padding: 0 12px !important;
+  color: var(--foreground) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+.pollquest-color-input:focus {
+  outline: none !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 1px var(--primary), 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Confirmation message textarea matching chic-ui-refresh */
+.pollquest-textarea {
+  display: flex;
+  min-height: 80px;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #ffffff;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--foreground);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  resize: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  line-height: 1.5;
+}
+
+.pollquest-textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 1px var(--primary), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.pollquest-textarea::placeholder {
+  color: var(--muted-foreground);
+}
+
+.pollquest-char-count {
+  margin: 8px 0 0 0;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+
+/* Datetime input with clock icon matching chic-ui-refresh */
+.pollquest-input-with-icon {
+  position: relative;
+  width: 100%;
+}
+
+.pollquest-input-with-icon .pollquest-input-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: var(--muted-foreground);
+  pointer-events: none;
+}
+
+.pollquest-datetime-input {
+  padding-left: 38px !important;
+  height: 42px !important;
+  border-radius: 8px !important;
+  border: 1px solid var(--border) !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.pollquest-datetime-input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+  margin-right: 4px;
+}
+
+.pollquest-datetime-input::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* Position toggle chic-ui-refresh */
+.pollquest-position-toggle {
+  display: inline-flex;
+  gap: 4px;
+  background: var(--muted);
+  padding: 4px;
+  border-radius: 12px;
+}
+
+.pollquest-pos-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pollquest-pos-btn:hover {
+  color: var(--foreground);
+}
+
+.pollquest-pos-btn.active {
+  background: #ffffff;
+  color: var(--foreground);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+/* Form Actions */
+.pollquest-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* Add Rule Outline Button */
+.pollquest-btn-add-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 16px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px dashed var(--border);
+  background: #ffffff;
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pollquest-btn-add-rule:hover {
+  background: var(--accent);
+  border-color: var(--primary);
+  color: var(--accent-foreground);
+}
+
+.pollquest-btn-add-rule svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Targeting Rules */
+.pollquest-targeting-rules-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+}
+
+.pollquest-rule-item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.pollquest-rule-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 640px) {
+  .pollquest-rule-grid {
+    grid-template-columns: 176px 128px minmax(0, 1fr);
+  }
+}
+
+/* Inputs & selects */
+.pollquest-target-select {
+  height: 40px !important;
+  width: 100% !important;
+  border-radius: 8px !important;
+  border: 1px solid var(--border) !important;
+  background-color: #ffffff !important;
+  padding: 0 32px 0 12px !important;
+  font-size: 14px !important;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  color: var(--foreground) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 10px center !important;
+  background-size: 16px 16px !important;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.pollquest-target-input,
+.pollquest-input {
+  height: 40px !important;
+  width: 100% !important;
+  border-radius: 8px !important;
+  border: 1px solid var(--border) !important;
+  background-color: #ffffff !important;
+  padding: 0 12px !important;
+  font-size: 14px !important;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  color: var(--foreground) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.pollquest-target-select:focus,
+.pollquest-target-input:focus,
+.pollquest-input:focus {
+  outline: none !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 1px var(--primary), 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Element Plus inputs & date picker in pollquest-panel */
+.pollquest-panel .el-date-editor.el-input,
+.pollquest-panel .el-date-editor,
+.pollquest-date-picker {
+  width: 100% !important;
+  max-width: 100% !important;
+  --el-date-editor-width: 100% !important;
+}
+
+.pollquest-panel .el-input__wrapper {
+  height: 40px !important;
+  border-radius: 8px !important;
+  background: #ffffff !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04) !important;
+  padding: 0 12px !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+  box-sizing: border-box !important;
+}
+
+.pollquest-panel .el-input__wrapper:hover {
+  border-color: var(--border) !important;
+}
+
+.pollquest-panel .el-input__wrapper.is-focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 1px var(--primary), 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+.pollquest-panel .el-input__inner {
+  height: 38px !important;
+  line-height: 38px !important;
+  font-size: 14px !important;
+  color: var(--foreground) !important;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
+.pollquest-panel .el-input__prefix {
+  color: var(--muted-foreground) !important;
+  margin-right: 8px !important;
+}
+
+.pollquest-panel .el-input__prefix svg {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+/* Date picker popper dropdown styling */
+.el-picker-panel {
+  border-radius: 12px !important;
+  border: none !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+  font-family: 'Manrope', sans-serif !important;
+}
+
+.el-picker-panel__footer .el-button {
+  border-radius: 6px !important;
+}
+
+.el-date-table td.current:not(.disabled) .el-date-table-cell__text {
+  background-color: var(--primary) !important;
+}
+
+/* Notifications switch row */
+.pollquest-notif-switch-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.pollquest-notif-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.pollquest-notif-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.pollquest-notif-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.pollquest-notif-info label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--foreground);
+  display: block;
+}
+
+.pollquest-notif-info p {
+  font-size: 14px;
+  color: var(--muted-foreground);
+  margin: 4px 0 0 0;
+}
+
+.pollquest-notif-emails-section {
+  margin-top: 28px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+  transition: opacity 0.2s;
+}
+
+.pollquest-notif-emails-section label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--foreground);
+  display: block;
+  margin-bottom: 12px;
+}
+
+.pollquest-notif-emails-section p {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  margin: 8px 0 0 0;
+}
+
+
 /* WP admin interference reset */
 #wpcontent {
   padding-left: 0 !important;
@@ -2732,4 +3215,45 @@ button {
 
 #pollquest-admin-app {
   margin: 0 !important;
+}
+
+/* ── Global focus ring removal ─────────────────────────────────────── */
+#pollquest-admin-app *:focus,
+#pollquest-admin-app *:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Element Plus – input wrapper focused state */
+#pollquest-admin-app .el-input__wrapper:focus,
+#pollquest-admin-app .el-input__wrapper.is-focus,
+#pollquest-admin-app .el-textarea__inner:focus,
+#pollquest-admin-app .el-select .el-input__wrapper:focus,
+#pollquest-admin-app .el-select .el-input__wrapper.is-focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Element Plus – button focused state */
+#pollquest-admin-app .el-button:focus,
+#pollquest-admin-app .el-button:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Element Plus – switch focused state */
+#pollquest-admin-app .el-switch__core:focus,
+#pollquest-admin-app .el-switch.is-focus .el-switch__core {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Native elements inside the app */
+#pollquest-admin-app input:focus,
+#pollquest-admin-app select:focus,
+#pollquest-admin-app textarea:focus,
+#pollquest-admin-app button:focus,
+#pollquest-admin-app button:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
 }

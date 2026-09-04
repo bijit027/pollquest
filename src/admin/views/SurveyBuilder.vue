@@ -486,117 +486,173 @@
 
       <!-- ====== SETTINGS TAB ====== -->
       <template v-if="activeTab === 'settings'">
-        <div style="grid-column: 1 / -1; max-width: 720px; padding: 32px;">
-          <div class="pollquest-builder-tab-content">
-            <!-- Appearance -->
-            <div>
-              <div class="pollquest-field-label" style="font-size:15px; font-weight:600;">Appearance</div>
-              <p class="pollquest-field-hint">Customize the look of your survey widget.</p>
-            </div>
+        <div class="pollquest-tab-content">
+          <div class="pollquest-page-heading">
+            <h2>Appearance</h2>
+            <p>Customize the look of your survey widget.</p>
+          </div>
 
+          <div class="pollquest-panel">
             <!-- Brand / Accent Color -->
-            <div>
-              <div class="pollquest-field-label">Brand color</div>
-              <p class="pollquest-field-hint">Fallback color used for focus rings and accents.</p>
-              <div class="pollquest-field-control pollquest-color-row">
-                <label class="pollquest-color-swatch">
-                  <div class="pollquest-color-preview" :style="{ background: survey.settings?.color || '#6366f1' }"></div>
-                  <input type="color" v-model="survey.settings.color" />
-                </label>
-                <code class="pollquest-color-code">{{ (survey.settings?.color || '#6366f1').toUpperCase() }}</code>
+            <section class="pollquest-setting-field">
+              <div class="pollquest-setting-field-header">
+                <label>Brand color</label>
+                <p>Fallback color used for focus rings and accents.</p>
               </div>
-            </div>
+              <div class="pollquest-setting-field-control">
+                <div class="pollquest-color-row">
+                  <label class="pollquest-color-swatch" :style="{ backgroundColor: survey.settings?.color || '#6366f1' }">
+                    <input type="color" v-model="survey.settings.color" />
+                  </label>
+                  <input
+                    type="text"
+                    v-model="survey.settings.color"
+                    class="pollquest-color-input"
+                    maxlength="7"
+                    placeholder="#6366F1"
+                  />
+                </div>
+              </div>
+            </section>
 
             <!-- Header Color -->
-            <div>
-              <div class="pollquest-field-label">Header color</div>
-              <p class="pollquest-field-hint">Background color of the survey widget header bar.</p>
-              <div class="pollquest-field-control pollquest-color-row">
-                <label class="pollquest-color-swatch">
-                  <div class="pollquest-color-preview" :style="{ background: survey.settings?.header_color || survey.settings?.color || '#6366f1' }"></div>
-                  <input type="color" v-model="survey.settings.header_color" />
-                </label>
-                <code class="pollquest-color-code">{{ (survey.settings?.header_color || survey.settings?.color || '#6366f1').toUpperCase() }}</code>
+            <section class="pollquest-setting-field">
+              <div class="pollquest-setting-field-header">
+                <label>Header color</label>
+                <p>Background color of the survey widget header bar.</p>
               </div>
-            </div>
+              <div class="pollquest-setting-field-control">
+                <div class="pollquest-color-row">
+                  <label class="pollquest-color-swatch" :style="{ backgroundColor: survey.settings?.header_color || survey.settings?.color || '#6366f1' }">
+                    <input type="color" v-model="survey.settings.header_color" />
+                  </label>
+                  <input
+                    type="text"
+                    v-model="survey.settings.header_color"
+                    class="pollquest-color-input"
+                    maxlength="7"
+                    placeholder="#6366F1"
+                  />
+                </div>
+              </div>
+            </section>
 
             <!-- Button Color -->
-            <div>
-              <div class="pollquest-field-label">Button color</div>
-              <p class="pollquest-field-hint">Background color of the Next / Submit buttons.</p>
-              <div class="pollquest-field-control pollquest-color-row">
-                <label class="pollquest-color-swatch">
-                  <div class="pollquest-color-preview" :style="{ background: survey.settings?.button_color || survey.settings?.color || '#6366f1' }"></div>
-                  <input type="color" v-model="survey.settings.button_color" />
-                </label>
-                <code class="pollquest-color-code">{{ (survey.settings?.button_color || survey.settings?.color || '#6366f1').toUpperCase() }}</code>
+            <section class="pollquest-setting-field">
+              <div class="pollquest-setting-field-header">
+                <label>Button color</label>
+                <p>Background color of the Next / Submit buttons.</p>
               </div>
-            </div>
+              <div class="pollquest-setting-field-control">
+                <div class="pollquest-color-row">
+                  <label class="pollquest-color-swatch" :style="{ backgroundColor: survey.settings?.button_color || survey.settings?.color || '#6366f1' }">
+                    <input type="color" v-model="survey.settings.button_color" />
+                  </label>
+                  <input
+                    type="text"
+                    v-model="survey.settings.button_color"
+                    class="pollquest-color-input"
+                    maxlength="7"
+                    placeholder="#6366F1"
+                  />
+                </div>
+              </div>
+            </section>
 
             <!-- Widget Position -->
-            <div>
-              <div class="pollquest-field-label">Widget position</div>
-              <p class="pollquest-field-hint">Where the survey widget appears on the page.</p>
-              <div class="pollquest-field-control pollquest-position-toggle">
-                <button
-                  v-for="pos in ['bottom-left', 'bottom-center', 'bottom-right']"
-                  :key="pos"
-                  class="pollquest-pos-btn"
-                  :class="{ active: survey.settings?.position === pos }"
-                  @click="survey.settings.position = pos"
-                >
-                  {{ pos === 'bottom-left' ? 'Bottom left' : pos === 'bottom-center' ? 'Bottom center' : 'Bottom right' }}
-                </button>
+            <section class="pollquest-setting-field">
+              <div class="pollquest-setting-field-header">
+                <label>Widget position</label>
+                <p>Where the survey widget appears on the page.</p>
               </div>
-            </div>
+              <div class="pollquest-setting-field-control">
+                <div class="pollquest-position-toggle">
+                  <button
+                    v-for="pos in ['bottom-left', 'bottom-center', 'bottom-right']"
+                    :key="pos"
+                    type="button"
+                    class="pollquest-pos-btn"
+                    :class="{ active: survey.settings?.position === pos }"
+                    @click="survey.settings.position = pos"
+                  >
+                    {{ pos === 'bottom-left' ? 'Bottom left' : pos === 'bottom-center' ? 'Bottom center' : 'Bottom right' }}
+                  </button>
+                </div>
+              </div>
+            </section>
 
             <!-- Confirmation Message -->
-            <div>
-              <div class="pollquest-field-label">Confirmation message</div>
-              <p class="pollquest-field-hint">Message to show respondents after completing the survey.</p>
-              <div class="pollquest-field-control">
-                <el-input 
-                  v-model="survey.settings.confirmation.message" 
-                  placeholder="Thank you for your feedback!"
-                  style="max-width: 480px;"
-                  size="large"
-                />
+            <section class="pollquest-setting-field">
+              <div class="pollquest-setting-field-header">
+                <label for="confirmation-message">Confirmation message</label>
+                <p>Message to show respondents after completing the survey.</p>
               </div>
-            </div>
+              <div class="pollquest-setting-field-control">
+                <textarea
+                  id="confirmation-message"
+                  v-model="survey.settings.confirmation.message"
+                  rows="3"
+                  maxlength="160"
+                  placeholder="Thank you for your feedback!"
+                  class="pollquest-textarea"
+                ></textarea>
+                <p class="pollquest-char-count">
+                  {{ (survey.settings?.confirmation?.message || '').length }}/160 characters
+                </p>
+              </div>
+            </section>
 
             <!-- Schedule Publish -->
-            <div>
-              <div class="pollquest-field-label">Schedule Publish (Optional)</div>
-              <p class="pollquest-field-hint">Set a future date and time for the survey to go live.</p>
-              <div class="pollquest-field-control">
+            <section class="pollquest-setting-field">
+              <div class="pollquest-setting-field-header">
+                <label>Schedule publish</label>
+                <p>Optional. Set a future date and time for the survey to go live.</p>
+              </div>
+              <div class="pollquest-setting-field-control">
                 <el-date-picker
                   v-model="survey.publish_at"
                   type="datetime"
                   placeholder="Select date and time"
-                  size="large"
                   format="YYYY-MM-DD HH:mm:ss"
                   value-format="YYYY-MM-DD HH:mm:ss"
-                  style="max-width: 480px; width: 100%;"
+                  class="pollquest-date-picker"
                 />
               </div>
-            </div>
+            </section>
+          </div>
+
+          <div class="pollquest-form-actions">
+            <button type="button" class="pollquest-btn pollquest-btn-ghost" @click="$router.push('/')">
+              Discard
+            </button>
+            <button type="button" class="pollquest-btn pollquest-btn-primary" @click="saveChanges" :disabled="saving">
+              <Check />
+              {{ saving ? 'Saving...' : 'Save changes' }}
+            </button>
           </div>
         </div>
       </template>
 
       <!-- ====== TARGETING TAB ====== -->
       <template v-if="activeTab === 'targeting'">
-        <div style="grid-column: 1 / -1;">
-          <div class="pollquest-builder-tab-content">
-            <div class="pollquest-field">
-              <label style="font-size:13px; font-weight:500; color:var(--foreground); margin-bottom:8px !important; display:block;">Match type</label>
+        <div class="pollquest-tab-content">
+          <div class="pollquest-page-heading">
+            <h2>Targeting</h2>
+            <p>Control who sees this survey and where.</p>
+          </div>
+
+          <div class="pollquest-panel">
+            <div>
+              <label class="pollquest-match-type-label">Match type</label>
               <div class="pollquest-position-toggle">
                 <button
+                  type="button"
                   class="pollquest-pos-btn"
                   :class="{ active: survey.targeting?.rule_match === 'all' }"
                   @click="survey.targeting.rule_match = 'all'"
                 >Match ALL rules</button>
                 <button
+                  type="button"
                   class="pollquest-pos-btn"
                   :class="{ active: survey.targeting?.rule_match === 'any' }"
                   @click="survey.targeting.rule_match = 'any'"
@@ -604,55 +660,65 @@
               </div>
             </div>
 
-            <div v-for="(rule, index) in survey.targeting.rules" :key="index" class="pollquest-rule-row" style="margin-top:10px;">
-              <select v-model="rule.type" style="width:150px;" @change="rule.value = ''">
-                <option value="url">URL</option>
-                <option value="post_type">Post Type</option>
-                <option value="page">Specific Page</option>
-                <option value="user_status">User Status</option>
-                <option value="referrer">Referrer</option>
-                <option value="time_on_page">Time on Page</option>
-                <option value="scroll_depth">Scroll Depth</option>
-                <option value="device">Device</option>
-                <option value="exit_intent">Exit Intent</option>
-              </select>
-              <select v-model="rule.operator" style="width:120px;">
-                <option value="is">Is</option>
-                <option value="is_not">Is Not</option>
-                <option value="contains" v-if="rule.type === 'url' || rule.type === 'referrer'">Contains</option>
-                <option value="greater_than" v-if="rule.type === 'time_on_page' || rule.type === 'scroll_depth'">Greater Than</option>
-                <option value="less_than" v-if="rule.type === 'time_on_page' || rule.type === 'scroll_depth'">Less Than</option>
-              </select>
+            <div class="pollquest-targeting-rules-list">
+              <div v-for="(rule, index) in survey.targeting.rules" :key="index" class="pollquest-rule-item">
+                <div class="pollquest-rule-grid">
+                  <select v-model="rule.type" class="pollquest-target-select" @change="rule.value = ''">
+                    <option value="url">URL</option>
+                    <option value="post_type">Post Type</option>
+                    <option value="page">Specific Page</option>
+                    <option value="user_status">User Status</option>
+                    <option value="referrer">Referrer</option>
+                    <option value="time_on_page">Time on Page</option>
+                    <option value="scroll_depth">Scroll Depth</option>
+                    <option value="device">Device</option>
+                    <option value="exit_intent">Exit Intent</option>
+                  </select>
+                  
+                  <select v-model="rule.operator" class="pollquest-target-select">
+                    <option value="is">Is</option>
+                    <option value="is_not">Is Not</option>
+                    <option value="contains" v-if="rule.type === 'url' || rule.type === 'referrer'">Contains</option>
+                    <option value="greater_than" v-if="rule.type === 'time_on_page' || rule.type === 'scroll_depth'">Greater Than</option>
+                    <option value="less_than" v-if="rule.type === 'time_on_page' || rule.type === 'scroll_depth'">Less Than</option>
+                  </select>
 
-              <select v-if="rule.type === 'post_type'" v-model="rule.value" style="flex:1;">
-                <option value="" disabled>Select post type...</option>
-                <option v-for="pt in logicOptions.post_types" :key="pt.value" :value="pt.value">{{ pt.label }}</option>
-              </select>
-
-              <select v-else-if="rule.type === 'page'" v-model="rule.value" style="flex:1;" @focus="loadPages(rule)">
-                <option value="" disabled>Select page...</option>
-                <option v-for="p in pageOptions" :key="p.id" :value="p.id">{{ p.title }}</option>
-              </select>
-
-              <select v-else-if="rule.type === 'user_status'" v-model="rule.value" style="flex:1;">
-                <option value="" disabled>Select status...</option>
-                <option v-for="st in logicOptions.user_status" :key="st.value" :value="st.value">{{ st.label }}</option>
-              </select>
-
-              <select v-else-if="rule.type === 'device'" v-model="rule.value" style="flex:1;">
-                <option value="" disabled>Select device...</option>
-                <option v-for="d in deviceOptions" :key="d.value" :value="d.value">{{ d.label }}</option>
-              </select>
-
-              <input v-else v-model="rule.value" placeholder="Value..." style="flex:1;" />
-
-              <button class="pollquest-icon-btn danger" @click="removeRule(index)">
-                <Trash2 />
-              </button>
+                  <select v-if="rule.type === 'post_type'" v-model="rule.value" class="pollquest-target-select flex-1">
+                    <option value="" disabled>Select post type...</option>
+                    <option v-for="pt in logicOptions.post_types" :key="pt.value" :value="pt.value">{{ pt.label }}</option>
+                  </select>
+                  <select v-else-if="rule.type === 'page'" v-model="rule.value" class="pollquest-target-select flex-1" @focus="loadPages(rule)">
+                    <option value="" disabled>Select page...</option>
+                    <option v-for="p in pageOptions" :key="p.id" :value="p.id">{{ p.title }}</option>
+                  </select>
+                  <select v-else-if="rule.type === 'user_status'" v-model="rule.value" class="pollquest-target-select flex-1">
+                    <option value="" disabled>Select status...</option>
+                    <option v-for="st in logicOptions.user_status" :key="st.value" :value="st.value">{{ st.label }}</option>
+                  </select>
+                  <select v-else-if="rule.type === 'device'" v-model="rule.value" class="pollquest-target-select flex-1">
+                    <option value="" disabled>Select device...</option>
+                    <option v-for="d in deviceOptions" :key="d.value" :value="d.value">{{ d.label }}</option>
+                  </select>
+                  <input v-else v-model="rule.value" placeholder="Value..." class="pollquest-target-input flex-1" />
+                </div>
+                <button type="button" class="pollquest-icon-btn danger shrink-0" @click="removeRule(index)" aria-label="Delete rule">
+                  <Trash2 />
+                </button>
+              </div>
             </div>
 
-            <button class="pollquest-add-rule-btn" @click="addRule" style="margin-top:12px;">
-              <Plus /> Add Rule
+            <button type="button" class="pollquest-btn-add-rule" @click="addRule">
+              <Plus /> Add rule
+            </button>
+          </div>
+
+          <div class="pollquest-form-actions">
+            <button type="button" class="pollquest-btn pollquest-btn-ghost" @click="$router.push('/')">
+              Discard
+            </button>
+            <button type="button" class="pollquest-btn pollquest-btn-primary" @click="saveChanges" :disabled="saving">
+              <Check />
+              {{ saving ? 'Saving...' : 'Save changes' }}
             </button>
           </div>
         </div>
@@ -660,31 +726,49 @@
 
       <!-- ====== NOTIFICATIONS TAB ====== -->
       <template v-if="activeTab === 'notifications'">
-        <div style="grid-column: 1 / -1;">
-          <div class="pollquest-builder-tab-content">
-            <div class="pollquest-notif-alert">
-              Send an email when someone fills out this survey.
-            </div>
+        <div class="pollquest-tab-content">
+          <div class="pollquest-page-heading">
+            <h2>Notifications</h2>
+            <p>Send an email when someone fills out this survey.</p>
+          </div>
 
-            <div class="pollquest-switch-row">
-              <span class="pollquest-switch-label">Enable Email Notifications</span>
+          <div class="pollquest-panel">
+            <div class="pollquest-notif-switch-row">
+              <div class="pollquest-notif-info">
+                <span class="pollquest-notif-icon">
+                  <Mail />
+                </span>
+                <div>
+                  <label>Email notifications</label>
+                  <p>Receive a message for every new response.</p>
+                </div>
+              </div>
               <label class="pollquest-switch">
                 <input type="checkbox" v-model="survey.notifications.email.active" />
                 <span class="pollquest-switch-slider"></span>
               </label>
             </div>
 
-            <div v-if="survey.notifications.email.active" style="margin-top:20px;">
-              <div class="pollquest-field">
-                <label style="font-size:13px; font-weight:500; color:var(--foreground); margin-bottom:6px !important; display:block;">Email Addresses</label>
-                <input
-                  v-model="survey.notifications.email.addresses"
-                  placeholder="admin@example.com, author@example.com"
-                  style="max-width:480px;"
-                />
-                <p class="pollquest-help-text">Comma-separated list of email addresses.</p>
-              </div>
+            <div class="pollquest-notif-emails-section" :class="{ 'opacity-50 pointer-events-none': !survey.notifications.email.active }">
+              <label>Email addresses</label>
+              <input
+                v-model="survey.notifications.email.addresses"
+                placeholder="admin@example.com, author@example.com"
+                class="pollquest-target-input w-full"
+                :disabled="!survey.notifications.email.active"
+              />
+              <p>Comma-separated list of email addresses.</p>
             </div>
+          </div>
+
+          <div class="pollquest-form-actions">
+            <button type="button" class="pollquest-btn pollquest-btn-ghost" @click="$router.push('/')">
+              Discard
+            </button>
+            <button type="button" class="pollquest-btn pollquest-btn-primary" @click="saveChanges" :disabled="saving">
+              <Check />
+              {{ saving ? 'Saving...' : 'Save changes' }}
+            </button>
           </div>
         </div>
       </template>
@@ -701,7 +785,7 @@ import { ElNotification, ElMessageBox } from 'element-plus';
 import {
   ArrowLeft, Check, X, Circle, GripVertical,
   Star, TrendingUp, Type, ListChecks, ToggleLeft,
-  Monitor, Smartphone, Hash, Plus, Trash2, LayoutTemplate,
+  Monitor, Smartphone, Hash, Plus, Trash2, LayoutTemplate, Mail, Clock,
 } from 'lucide-vue-next';
 
 const router = useRouter();
@@ -769,6 +853,16 @@ const survey = reactive({
     }
   },
   publish_at: null
+});
+
+const formattedPublishAt = computed({
+  get() {
+    if (!survey.publish_at) return '';
+    return String(survey.publish_at).replace(' ', 'T').slice(0, 16);
+  },
+  set(val) {
+    survey.publish_at = val ? val.replace('T', ' ') : null;
+  }
 });
 
 // Set initial active question
