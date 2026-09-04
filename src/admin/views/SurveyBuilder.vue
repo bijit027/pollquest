@@ -330,7 +330,7 @@
                 <input type="checkbox" :checked="activeQuestion.logic?.enabled" @change="toggleLogicEnabled" />
                 <div>
                   <div class="pollquest-toggle-row-label">Enable Conditional Logic</div>
-                  <p class="pollquest-toggle-row-hint">Show/hide this question based on previous answers.</p>
+                  <p class="pollquest-toggle-row-hint">Show/hide/jump this question based on previous answers.</p>
                 </div>
               </label>
 
@@ -340,7 +340,23 @@
                   <select v-model="activeQuestion.logic.action" style="width:100%; padding:8px; border:1px solid #d1d5db; border-radius:6px; font-size:13px;">
                     <option value="show">Show this question if conditions match</option>
                     <option value="hide">Hide this question if conditions match</option>
-                    <option value="skip">Skip to next question if conditions match</option>
+                    <option value="jump">Jump to another question if conditions match</option>
+                  </select>
+                </div>
+                
+                <div v-if="activeQuestion.logic.action === 'jump'" style="margin-top:12px;">
+                  <label style="font-size:13px; font-weight:500; color:var(--foreground); margin-bottom:8px !important; display:block;">Jump to</label>
+                  <select v-model="activeQuestion.logic.jumpToId" style="width:100%; padding:8px; border:1px solid #d1d5db; border-radius:6px; font-size:13px;">
+                    <option value="">Select target question...</option>
+                    <option v-for="q in getOtherQuestions()" :key="q.id" :value="q.id">{{ q.label.slice(0, 40) }}</option>
+                  </select>
+                </div>
+                
+                <div style="margin-top:12px;">
+                  <label style="font-size:13px; font-weight:500; color:var(--foreground); margin-bottom:8px !important; display:block;">Match Mode</label>
+                  <select v-model="activeQuestion.logic.match_all" style="width:100%; padding:8px; border:1px solid #d1d5db; border-radius:6px; font-size:13px;">
+                    <option :value="true">ALL conditions must match (AND)</option>
+                    <option :value="false">ANY condition can match (OR)</option>
                   </select>
                 </div>
 
@@ -356,21 +372,75 @@
                     No conditions added. Add at least one condition.
                   </div>
 
-                  <div v-for="(cond, idx) in (activeQuestion.logic.conditions || [])" :key="idx" class="pollquest-rule-row" style="margin-top:8px;">
-                    <select v-model="cond.questionId" style="width:140px; font-size:12px;" @change="updateConditionOptions(idx)">
+                  <div v-for="(cond, idx) in (activeQuestion.logic.conditions || [])" :key="idx" class="pollquest-rule-row" style="margin-top:8px; flex-wrap:wrap; gap:6px;">
+                    <select v-model="cond.questionId" style="flex:1; min-width:120px; font-size:12px;" @change="updateConditionOptions(idx)">
                       <option value="">Select question...</option>
-                      <option v-for="q in getPreviousQuestions()" :key="q.id" :value="q.id">{{ q.label }}</option>
+                      <option v-for="q in getPreviousQuestions()" :key="q.id" :value="q.id">{{ q.label.slice(0, 30) }}</option>
                     </select>
-                    <select v-model="cond.operator" style="width:100px; font-size:12px;">
-                      <option value="=">Is</option>
-                      <option value="!=">Is not</option>
-                      <option value="in">Includes</option>
+                    
+                    <select v-model="cond.operator" style="width:90px; font-size:12px;">
+                      <template v-if="isNumericQuestion(cond.questionId)">
+                        <option value="=">equals</option>
+                        <option value="!=">not equals</option>
+                        <option value=">=">≥ (gte)</option>
+                        <option value="<=">≤ (lte)</option>
+                        <option value=">">gt</option>
+                        <option value="<">lt</option>
+                      </template>
+                      <template v-else-if="isArrayQuestion(cond.questionId)">
+                        <option value="includes">includes</option>
+                        <option value="excludes">excludes</option>
+                      </template>
+                      <template v-else>
+                        <option value="=">is</option>
+                        <option value="!=">is not</option>
+                        <option value="contains">contains</option>
+                        <option value="starts_with">starts with</option>
+                      </template>
                     </select>
-                    <select v-model="cond.value" style="width:120px; font-size:12px;">
-                      <option value="">Select value...</option>
+                    
+                    <!-- Value selector: context-aware by question type -->
+                    <select
+                      v-if="getConditionOptions(cond.questionId).length > 0"
+                      v-model="cond.value"
+                      style="flex:1; min-width:100px; font-size:12px;"
+                    >
+                      <option value="">Select value…</option>
                       <option v-for="opt in getConditionOptions(cond.questionId)" :key="opt" :value="opt">{{ opt }}</option>
                     </select>
-                    <button class="pollquest-icon-btn danger" @click="removeLogicCondition(idx)" style="margin-left:8px;">
+                    <!-- Number input for 'number' type questions -->
+                    <input
+                      v-else-if="getConditionQuestionType(cond.questionId) === 'number'"
+                      type="number"
+                      v-model="cond.value"
+                      placeholder="e.g. 42"
+                      style="flex:1; min-width:100px; font-size:12px; padding:6px 8px; border:1px solid var(--border); border-radius:6px;"
+                    />
+                    <!-- Date input for 'date' type questions -->
+                    <input
+                      v-else-if="getConditionQuestionType(cond.questionId) === 'date'"
+                      type="date"
+                      v-model="cond.value"
+                      style="flex:1; min-width:100px; font-size:12px; padding:6px 8px; border:1px solid var(--border); border-radius:6px;"
+                    />
+                    <!-- Email input -->
+                    <input
+                      v-else-if="getConditionQuestionType(cond.questionId) === 'email'"
+                      type="email"
+                      v-model="cond.value"
+                      placeholder="e.g. user@example.com"
+                      style="flex:1; min-width:100px; font-size:12px; padding:6px 8px; border:1px solid var(--border); border-radius:6px;"
+                    />
+                    <!-- Free-text fallback (textarea, text, etc.) -->
+                    <input
+                      v-else
+                      v-model="cond.value"
+                      :placeholder="cond.questionId ? 'Enter value…' : '← Pick a question first'"
+                      :disabled="!cond.questionId"
+                      style="flex:1; min-width:100px; font-size:12px; padding:6px 8px; border:1px solid var(--border); border-radius:6px;"
+                    />
+
+                    <button class="pollquest-icon-btn danger" @click="removeLogicCondition(idx)" style="margin-left:4px;">
                       <X style="width:14px; height:14px;" />
                     </button>
                   </div>
@@ -735,6 +805,25 @@ const removeLogicCondition = (index) => {
 const getPreviousQuestions = () => {
   const currentIndex = survey.questions.findIndex(q => q.id === activeQuestionId.value);
   return survey.questions.slice(0, currentIndex);
+};
+
+const getOtherQuestions = () => {
+  return survey.questions.filter(q => q.id !== activeQuestionId.value);
+};
+
+const getConditionQuestionType = (questionId) => {
+  const question = survey.questions.find(q => q.id === questionId);
+  return question ? question.type : null;
+};
+
+const isNumericQuestion = (questionId) => {
+  const type = getConditionQuestionType(questionId);
+  return ['rating', 'nps', 'number'].includes(type);
+};
+
+const isArrayQuestion = (questionId) => {
+  const type = getConditionQuestionType(questionId);
+  return type === 'checkbox';
 };
 
 const getConditionOptions = (questionId) => {
