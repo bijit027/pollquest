@@ -26,18 +26,29 @@
           </div>
         </div>
 
-        <!-- Right: actions -->
         <div class="pollquest-editor-actions">
           <button class="pollquest-btn pollquest-btn-ghost pollquest-btn-sm" @click="previewSurvey" v-if="route.params.id">
             Preview
           </button>
-          <button class="pollquest-btn pollquest-btn-secondary pollquest-btn-sm" @click="saveDraft" :disabled="saving">
-            {{ saving && survey.status === 'draft' ? 'Saving...' : 'Save draft' }}
-          </button>
-          <button class="pollquest-btn pollquest-btn-primary pollquest-btn-sm" @click="publishSurvey" :disabled="saving">
-            <Check />
-            {{ saving && survey.status === 'publish' ? 'Publishing...' : 'Publish' }}
-          </button>
+
+          <template v-if="survey.status === 'publish'">
+            <button class="pollquest-btn pollquest-btn-secondary pollquest-btn-sm" @click="saveDraft" :disabled="saving" title="Unpublish survey and revert to draft">
+              Unpublish
+            </button>
+            <button class="pollquest-btn pollquest-btn-primary pollquest-btn-sm" @click="saveChanges" :disabled="saving">
+              <Check />
+              {{ saving ? 'Saving...' : 'Save changes' }}
+            </button>
+          </template>
+          <template v-else>
+            <button class="pollquest-btn pollquest-btn-secondary pollquest-btn-sm" @click="saveDraft" :disabled="saving">
+              {{ saving ? 'Saving...' : 'Save draft' }}
+            </button>
+            <button class="pollquest-btn pollquest-btn-primary pollquest-btn-sm" @click="publishSurvey" :disabled="saving">
+              <Check />
+              Publish
+            </button>
+          </template>
         </div>
       </div>
 
@@ -921,6 +932,10 @@ const saveDraft = async () => {
   await saveSurvey(false);
 };
 
+const saveChanges = async () => {
+  await saveSurvey(false);
+};
+
 const publishSurvey = async () => {
   try {
     await ElMessageBox.confirm(
@@ -964,13 +979,22 @@ const saveSurvey = async (isPublish = false) => {
         router.replace(`/surveys/${data.id}/edit`);
       }
 
-      if (isPublish || survey.status === 'publish') {
+      if (isPublish) {
         ElNotification({
           title: 'Survey Published!',
           message: `"${survey.title}" is now active and live on your site.`,
           type: 'success',
           position: 'bottom-right',
           duration: 4000,
+          customClass: 'pollquest-notification',
+        });
+      } else if (survey.status === 'publish') {
+        ElNotification({
+          title: 'Changes Saved',
+          message: `"${survey.title}" has been updated successfully.`,
+          type: 'success',
+          position: 'bottom-right',
+          duration: 3000,
           customClass: 'pollquest-notification',
         });
       } else {
