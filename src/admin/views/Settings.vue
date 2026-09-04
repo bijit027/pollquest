@@ -66,7 +66,7 @@
           <div>
             <div class="pollquest-field-label">Minimum role</div>
             <div class="pollquest-field-control">
-              <select class="pollquest-select" v-model="settings.minimum_role">
+              <select class="pollquest-target-select" v-model="settings.minimum_role">
                 <option value="administrator">Administrator</option>
                 <option value="editor">Editor</option>
                 <option value="author">Author</option>
