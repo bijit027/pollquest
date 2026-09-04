@@ -68,31 +68,38 @@
             <span class="pollquest-q-count">{{ survey.questions.length }}</span>
           </div>
 
-          <ul class="pollquest-q-list">
-            <li
-              v-for="(q, i) in survey.questions"
-              :key="q.id"
-              class="pollquest-q-item"
-              :class="{ active: activeQuestionId === q.id }"
-              @click="activeQuestionId = q.id"
-            >
-              <GripVertical class="pollquest-q-grip" />
-              <div class="pollquest-q-type-icon">
-                <component :is="questionIcon(q.type)" />
-              </div>
-              <div style="min-width:0">
-                <div class="pollquest-q-label">{{ q.label || 'Untitled' }}</div>
-                <p class="pollquest-q-meta">{{ q.type }} · #{{ i + 1 }}</p>
-              </div>
-              <button
-                class="pollquest-q-remove"
-                @click.stop="removeQuestion(i)"
-                aria-label="Remove question"
+          <draggable
+            v-model="survey.questions"
+            tag="ul"
+            class="pollquest-q-list"
+            item-key="id"
+            handle=".pollquest-q-grip"
+            animation="200"
+          >
+            <template #item="{ element: q, index: i }">
+              <li
+                class="pollquest-q-item"
+                :class="{ active: activeQuestionId === q.id }"
+                @click="activeQuestionId = q.id"
               >
-                <X />
-              </button>
-            </li>
-          </ul>
+                <GripVertical class="pollquest-q-grip" />
+                <div class="pollquest-q-type-icon">
+                  <component :is="questionIcon(q.type)" />
+                </div>
+                <div style="min-width:0">
+                  <div class="pollquest-q-label">{{ q.label || 'Untitled' }}</div>
+                  <p class="pollquest-q-meta">{{ q.type }} · #{{ i + 1 }}</p>
+                </div>
+                <button
+                  class="pollquest-q-remove"
+                  @click.stop="removeQuestion(i)"
+                  aria-label="Remove question"
+                >
+                  <X />
+                </button>
+              </li>
+            </template>
+          </draggable>
 
           <!-- Add question types -->
           <div class="pollquest-add-question-section">
@@ -678,6 +685,7 @@
 <script setup>
 import { ref, reactive, computed, onMounted, inject, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import draggable from 'vuedraggable';
 import { ElNotification, ElMessageBox } from 'element-plus';
 import {
   ArrowLeft, Check, X, Circle, GripVertical,
